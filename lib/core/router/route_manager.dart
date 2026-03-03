@@ -15,7 +15,7 @@ class RouteManager {
       GoRoute(
         name: mainNavViewName,
         path: mainNavViewPath,
-        builder: (context, state) => const MainBottomNavScreen(),
+        builder: (context, state) =>  MainBottomNavScreen(),
       ),
     ],
   );
