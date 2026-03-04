@@ -29,7 +29,7 @@ class _SplashViewState extends State<SplashScreen>
     _controller.forward();
 
     // Check if user is logged in
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 0), () async {
       RouteManager.router.go(mainNavViewPath);
     });
   }
