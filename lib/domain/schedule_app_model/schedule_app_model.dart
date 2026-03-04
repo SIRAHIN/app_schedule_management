@@ -13,6 +13,7 @@ class ScheduleAppModel with _$ScheduleAppModel {
     @HiveField(2) required String selectedDate,
     @HiveField(3) required String selectedTime,
     @HiveField(4) String? appIcon,
+    @HiveField(5) String? scheduleLabel,
   }) = _ScheduleAppModel;
 
   factory ScheduleAppModel.fromJson(Map<String, dynamic> json) =>

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
@@ -6,12 +8,12 @@ import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toastification/toastification.dart';
 
-void showCreateScheduleBottomSheet(BuildContext context, AppInfo app) {
+void showCreateScheduleBottomSheet(BuildContext context, AppInfo app, ScheduleAppModel? scheduleApp) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     builder: (context) {
-      return CreateScheduleBottomSheet(app: app);
+      return CreateScheduleBottomSheet(app: app, scheduleApp: scheduleApp);
     },
   );
 }
@@ -25,8 +27,9 @@ void showCreateScheduleBottomSheet(BuildContext context, AppInfo app) {
 
 class CreateScheduleBottomSheet extends StatefulWidget {
   final AppInfo app;
+  final ScheduleAppModel? scheduleApp;
 
-  CreateScheduleBottomSheet({super.key, required this.app});
+  CreateScheduleBottomSheet({super.key, required this.app, this.scheduleApp});
 
   @override
   State<CreateScheduleBottomSheet> createState() => _CreateScheduleBottomSheetState();
@@ -81,13 +84,14 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
       packageName: widget.app.packageName!,
       appName: widget.app.appName!,
       selectedDate: _selectedDate.value!.toIso8601String(),
-      selectedTime: _selectedTime.value!.format(context),
-      appIcon: widget.app.iconBytes.toString(),
+      selectedTime: '${_selectedTime.value!.hour.toString().padLeft(2, '0')}:${_selectedTime.value!.minute.toString().padLeft(2, '0')}',
+      appIcon: base64Encode(widget.app.iconBytes!),
+      scheduleLabel: _scheduleLabelController.text,
     );
 
     // Get All Schedule Apps
     final List<ScheduleAppModel> existingScheduleApps =
-        await getIt<LocalDbSource>().getAllScheduleApps();
+        await getIt<LocalDbSource>().getAllScheduleApps();  
 
     // Duplicate check: same date + same time
     for (var element in existingScheduleApps) {
@@ -104,13 +108,17 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
       }
     }
 
-    // Insert Schedule App
-    await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+    // Insert Schedule App || Update Schedule App
+    if (widget.scheduleApp != null) {
+      await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
+    } else {
+      await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+    }
 
     // Show Success Toast
     toastification.show(
       context: context,
-      title: const Text('Schedule created successfully'),
+      title: widget.scheduleApp != null ? const Text('Schedule updated successfully') : const Text('Schedule created successfully'),
       type: ToastificationType.success,
       autoCloseDuration: const Duration(seconds: 3),
       alignment: Alignment.topCenter,
@@ -123,9 +131,16 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
   @override
   void initState() {
     super.initState();
-    _scheduleLabelController = TextEditingController();
-    _selectedDate = ValueNotifier(null);
-    _selectedTime = ValueNotifier(null);
+    _scheduleLabelController = TextEditingController(text: widget.scheduleApp?.scheduleLabel);
+    _selectedDate = ValueNotifier(widget.scheduleApp?.selectedDate != null ? DateTime.parse(widget.scheduleApp!.selectedDate) : null);
+    _selectedTime = ValueNotifier(
+  widget.scheduleApp?.selectedTime != null
+      ? TimeOfDay(
+          hour: int.parse(widget.scheduleApp!.selectedTime.split(':')[0]),
+          minute: int.parse(widget.scheduleApp!.selectedTime.split(':')[1]),
+        )
+      : null,
+);
   }
 
   // Dispose
@@ -144,6 +159,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
         left: 16,
         right: 16,
         top: 16,
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -242,7 +258,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () => _onCreatePressed(context),
-                child: const Text('Create Schedule'),
+                child:  widget.scheduleApp != null ? Text('Update Schedule') : Text('Create Schedule'),
               ),
             ],
           ),

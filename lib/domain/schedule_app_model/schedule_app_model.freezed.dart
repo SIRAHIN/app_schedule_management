@@ -30,6 +30,8 @@ mixin _$ScheduleAppModel {
   String get selectedTime => throw _privateConstructorUsedError;
   @HiveField(4)
   String? get appIcon => throw _privateConstructorUsedError;
+  @HiveField(5)
+  String? get scheduleLabel => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $ScheduleAppModelCopyWith<$Res> {
       @HiveField(1) String appName,
       @HiveField(2) String selectedDate,
       @HiveField(3) String selectedTime,
-      @HiveField(4) String? appIcon});
+      @HiveField(4) String? appIcon,
+      @HiveField(5) String? scheduleLabel});
 }
 
 /// @nodoc
@@ -69,6 +72,7 @@ class _$ScheduleAppModelCopyWithImpl<$Res, $Val extends ScheduleAppModel>
     Object? selectedDate = null,
     Object? selectedTime = null,
     Object? appIcon = freezed,
+    Object? scheduleLabel = freezed,
   }) {
     return _then(_value.copyWith(
       packageName: null == packageName
@@ -91,6 +95,10 @@ class _$ScheduleAppModelCopyWithImpl<$Res, $Val extends ScheduleAppModel>
           ? _value.appIcon
           : appIcon // ignore: cast_nullable_to_non_nullable
               as String?,
+      scheduleLabel: freezed == scheduleLabel
+          ? _value.scheduleLabel
+          : scheduleLabel // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,7 +116,8 @@ abstract class _$$ScheduleAppModelImplCopyWith<$Res>
       @HiveField(1) String appName,
       @HiveField(2) String selectedDate,
       @HiveField(3) String selectedTime,
-      @HiveField(4) String? appIcon});
+      @HiveField(4) String? appIcon,
+      @HiveField(5) String? scheduleLabel});
 }
 
 /// @nodoc
@@ -127,6 +136,7 @@ class __$$ScheduleAppModelImplCopyWithImpl<$Res>
     Object? selectedDate = null,
     Object? selectedTime = null,
     Object? appIcon = freezed,
+    Object? scheduleLabel = freezed,
   }) {
     return _then(_$ScheduleAppModelImpl(
       packageName: null == packageName
@@ -149,6 +159,10 @@ class __$$ScheduleAppModelImplCopyWithImpl<$Res>
           ? _value.appIcon
           : appIcon // ignore: cast_nullable_to_non_nullable
               as String?,
+      scheduleLabel: freezed == scheduleLabel
+          ? _value.scheduleLabel
+          : scheduleLabel // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -161,7 +175,8 @@ class _$ScheduleAppModelImpl implements _ScheduleAppModel {
       @HiveField(1) required this.appName,
       @HiveField(2) required this.selectedDate,
       @HiveField(3) required this.selectedTime,
-      @HiveField(4) this.appIcon});
+      @HiveField(4) this.appIcon,
+      @HiveField(5) this.scheduleLabel});
 
   factory _$ScheduleAppModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleAppModelImplFromJson(json);
@@ -181,10 +196,13 @@ class _$ScheduleAppModelImpl implements _ScheduleAppModel {
   @override
   @HiveField(4)
   final String? appIcon;
+  @override
+  @HiveField(5)
+  final String? scheduleLabel;
 
   @override
   String toString() {
-    return 'ScheduleAppModel(packageName: $packageName, appName: $appName, selectedDate: $selectedDate, selectedTime: $selectedTime, appIcon: $appIcon)';
+    return 'ScheduleAppModel(packageName: $packageName, appName: $appName, selectedDate: $selectedDate, selectedTime: $selectedTime, appIcon: $appIcon, scheduleLabel: $scheduleLabel)';
   }
 
   @override
@@ -199,13 +217,15 @@ class _$ScheduleAppModelImpl implements _ScheduleAppModel {
                 other.selectedDate == selectedDate) &&
             (identical(other.selectedTime, selectedTime) ||
                 other.selectedTime == selectedTime) &&
-            (identical(other.appIcon, appIcon) || other.appIcon == appIcon));
+            (identical(other.appIcon, appIcon) || other.appIcon == appIcon) &&
+            (identical(other.scheduleLabel, scheduleLabel) ||
+                other.scheduleLabel == scheduleLabel));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, packageName, appName, selectedDate, selectedTime, appIcon);
+  int get hashCode => Object.hash(runtimeType, packageName, appName,
+      selectedDate, selectedTime, appIcon, scheduleLabel);
 
   @JsonKey(ignore: true)
   @override
@@ -228,7 +248,8 @@ abstract class _ScheduleAppModel implements ScheduleAppModel {
       @HiveField(1) required final String appName,
       @HiveField(2) required final String selectedDate,
       @HiveField(3) required final String selectedTime,
-      @HiveField(4) final String? appIcon}) = _$ScheduleAppModelImpl;
+      @HiveField(4) final String? appIcon,
+      @HiveField(5) final String? scheduleLabel}) = _$ScheduleAppModelImpl;
 
   factory _ScheduleAppModel.fromJson(Map<String, dynamic> json) =
       _$ScheduleAppModelImpl.fromJson;
@@ -248,6 +269,9 @@ abstract class _ScheduleAppModel implements ScheduleAppModel {
   @override
   @HiveField(4)
   String? get appIcon;
+  @override
+  @HiveField(5)
+  String? get scheduleLabel;
   @override
   @JsonKey(ignore: true)
   _$$ScheduleAppModelImplCopyWith<_$ScheduleAppModelImpl> get copyWith =>

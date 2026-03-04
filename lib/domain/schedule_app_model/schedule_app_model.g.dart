@@ -22,13 +22,14 @@ class ScheduleAppModelAdapter extends TypeAdapter<ScheduleAppModel> {
       selectedDate: fields[2] as String,
       selectedTime: fields[3] as String,
       appIcon: fields[4] as String?,
+      scheduleLabel: fields[5] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleAppModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.packageName)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class ScheduleAppModelAdapter extends TypeAdapter<ScheduleAppModel> {
       ..writeByte(3)
       ..write(obj.selectedTime)
       ..writeByte(4)
-      ..write(obj.appIcon);
+      ..write(obj.appIcon)
+      ..writeByte(5)
+      ..write(obj.scheduleLabel);
   }
 
   @override
@@ -64,6 +67,7 @@ _$ScheduleAppModelImpl _$$ScheduleAppModelImplFromJson(
       selectedDate: json['selectedDate'] as String,
       selectedTime: json['selectedTime'] as String,
       appIcon: json['appIcon'] as String?,
+      scheduleLabel: json['scheduleLabel'] as String?,
     );
 
 Map<String, dynamic> _$$ScheduleAppModelImplToJson(
@@ -74,4 +78,5 @@ Map<String, dynamic> _$$ScheduleAppModelImplToJson(
       'selectedDate': instance.selectedDate,
       'selectedTime': instance.selectedTime,
       'appIcon': instance.appIcon,
+      'scheduleLabel': instance.scheduleLabel,
     };

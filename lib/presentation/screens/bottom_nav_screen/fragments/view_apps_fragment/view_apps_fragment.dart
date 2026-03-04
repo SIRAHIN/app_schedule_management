@@ -73,7 +73,7 @@ class ViewAppsFragment extends StatelessWidget {
                             return InkWell(
                               onTap: () {
                                 // Bottom Sheet For New Schedule Create
-                                showCreateScheduleBottomSheet(context, app);
+                                showCreateScheduleBottomSheet(context, app, null);
                               },
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
