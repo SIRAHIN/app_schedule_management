@@ -37,6 +37,10 @@ class ViewAppsCubit extends Cubit<ViewAppsState> {
           )
           .toList();
     }
-    emit(ViewAppsState.loaded(_filteredApps));
+    if (_filteredApps.isEmpty) {
+      emit(ViewAppsState.error("No apps found for this query $query"));
+    } else {
+      emit(ViewAppsState.loaded(_filteredApps));
+    }
   }
 }
