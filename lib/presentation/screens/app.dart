@@ -4,6 +4,7 @@ import 'package:app_schedule_management/presentation/cubits/view_apps_cubit/cubi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:toastification/toastification.dart';
 
 
 class App extends StatelessWidget {
@@ -17,24 +18,26 @@ class App extends StatelessWidget {
           create: (context) => getIt<ViewAppsCubit>()..getInstalledApps(),
         ),  
       ],
-      child: ScreenUtilInit(
-        designSize: const Size(375, 812),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return MaterialApp.router(
-            theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.red,
-                primary: Colors.red,
-                secondary: Colors.black,
+      child: ToastificationWrapper(
+        child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) {
+            return MaterialApp.router(
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: Colors.red,
+                  primary: Colors.red,
+                  secondary: Colors.black,
+                ),
               ),
-            ),
-            debugShowCheckedModeBanner: false,
-            routerConfig: RouteManager.router,
-          );
-        },
+              debugShowCheckedModeBanner: false,
+              routerConfig: RouteManager.router,
+            );
+          },
+        ),
       ),
     );
   }

@@ -12,8 +12,7 @@ part of 'view_apps_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ViewAppsState {
@@ -23,14 +22,16 @@ mixin _$ViewAppsState {
     required TResult Function() loading,
     required TResult Function(List<AppInfo> apps) loaded,
     required TResult Function(String error) error,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<AppInfo> apps)? loaded,
     TResult? Function(String error)? error,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
@@ -38,21 +39,24 @@ mixin _$ViewAppsState {
     TResult Function(List<AppInfo> apps)? loaded,
     TResult Function(String error)? error,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
@@ -60,15 +64,15 @@ mixin _$ViewAppsState {
     TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ViewAppsStateCopyWith<$Res> {
   factory $ViewAppsStateCopyWith(
-    ViewAppsState value,
-    $Res Function(ViewAppsState) then,
-  ) = _$ViewAppsStateCopyWithImpl<$Res, ViewAppsState>;
+          ViewAppsState value, $Res Function(ViewAppsState) then) =
+      _$ViewAppsStateCopyWithImpl<$Res, ViewAppsState>;
 }
 
 /// @nodoc
@@ -80,17 +84,13 @@ class _$ViewAppsStateCopyWithImpl<$Res, $Val extends ViewAppsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 abstract class _$$InitialImplCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
-    _$InitialImpl value,
-    $Res Function(_$InitialImpl) then,
-  ) = __$$InitialImplCopyWithImpl<$Res>;
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -98,12 +98,8 @@ class __$$InitialImplCopyWithImpl<$Res>
     extends _$ViewAppsStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
   __$$InitialImplCopyWithImpl(
-    _$InitialImpl _value,
-    $Res Function(_$InitialImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -207,9 +203,8 @@ abstract class _Initial implements ViewAppsState {
 /// @nodoc
 abstract class _$$LoadingImplCopyWith<$Res> {
   factory _$$LoadingImplCopyWith(
-    _$LoadingImpl value,
-    $Res Function(_$LoadingImpl) then,
-  ) = __$$LoadingImplCopyWithImpl<$Res>;
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
@@ -217,12 +212,8 @@ class __$$LoadingImplCopyWithImpl<$Res>
     extends _$ViewAppsStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
-    _$LoadingImpl _value,
-    $Res Function(_$LoadingImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+      : super(_value, _then);
 }
 
 /// @nodoc
@@ -326,9 +317,8 @@ abstract class _Loading implements ViewAppsState {
 /// @nodoc
 abstract class _$$LoadedImplCopyWith<$Res> {
   factory _$$LoadedImplCopyWith(
-    _$LoadedImpl value,
-    $Res Function(_$LoadedImpl) then,
-  ) = __$$LoadedImplCopyWithImpl<$Res>;
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<AppInfo> apps});
 }
@@ -338,23 +328,20 @@ class __$$LoadedImplCopyWithImpl<$Res>
     extends _$ViewAppsStateCopyWithImpl<$Res, _$LoadedImpl>
     implements _$$LoadedImplCopyWith<$Res> {
   __$$LoadedImplCopyWithImpl(
-    _$LoadedImpl _value,
-    $Res Function(_$LoadedImpl) _then,
-  ) : super(_value, _then);
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? apps = null}) {
-    return _then(
-      _$LoadedImpl(
-        null == apps
-            ? _value._apps
-            : apps // ignore: cast_nullable_to_non_nullable
-                  as List<AppInfo>,
-      ),
-    );
+  $Res call({
+    Object? apps = null,
+  }) {
+    return _then(_$LoadedImpl(
+      null == apps
+          ? _value._apps
+          : apps // ignore: cast_nullable_to_non_nullable
+              as List<AppInfo>,
+    ));
   }
 }
 
@@ -388,9 +375,7 @@ class _$LoadedImpl implements _Loaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_apps));
 
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
@@ -475,10 +460,7 @@ abstract class _Loaded implements ViewAppsState {
   const factory _Loaded(final List<AppInfo> apps) = _$LoadedImpl;
 
   List<AppInfo> get apps;
-
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -486,9 +468,8 @@ abstract class _Loaded implements ViewAppsState {
 /// @nodoc
 abstract class _$$ErrorImplCopyWith<$Res> {
   factory _$$ErrorImplCopyWith(
-    _$ErrorImpl value,
-    $Res Function(_$ErrorImpl) then,
-  ) = __$$ErrorImplCopyWithImpl<$Res>;
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String error});
 }
@@ -498,23 +479,20 @@ class __$$ErrorImplCopyWithImpl<$Res>
     extends _$ViewAppsStateCopyWithImpl<$Res, _$ErrorImpl>
     implements _$$ErrorImplCopyWith<$Res> {
   __$$ErrorImplCopyWithImpl(
-    _$ErrorImpl _value,
-    $Res Function(_$ErrorImpl) _then,
-  ) : super(_value, _then);
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? error = null}) {
-    return _then(
-      _$ErrorImpl(
-        null == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_$ErrorImpl(
+      null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
@@ -542,9 +520,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -629,10 +605,7 @@ abstract class _Error implements ViewAppsState {
   const factory _Error(final String error) = _$ErrorImpl;
 
   String get error;
-
-  /// Create a copy of ViewAppsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

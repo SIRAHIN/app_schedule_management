@@ -1,9 +1,12 @@
 import 'package:app_schedule_management/presentation/cubits/view_apps_cubit/cubit/view_apps_cubit.dart';
+import 'package:app_schedule_management/presentation/screens/bottom_nav_screen/fragments/view_apps_fragment/widgets/create_schedule_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_device_apps/flutter_device_apps.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ViewAppsFragment extends StatelessWidget {
-   ViewAppsFragment({super.key});
+  ViewAppsFragment({super.key});
 
   // App Search Text Editing Controller
   final TextEditingController _searchController = TextEditingController();
@@ -12,10 +15,7 @@ class ViewAppsFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'View Apps',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text('View Apps', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
         centerTitle: true,
       ),
@@ -70,29 +70,39 @@ class ViewAppsFragment extends StatelessWidget {
                               ),
                           itemBuilder: (context, index) {
                             final app = apps[index];
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.memory(
-                                  app.iconBytes!,
-                                  width: 50,
-                                  height: 50,
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  app.appName ?? '',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                              ],
+                            return InkWell(
+                              onTap: () {
+                                // Bottom Sheet For New Schedule Create
+                                showCreateScheduleBottomSheet(context, app);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.memory(
+                                    app.iconBytes!,
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    app.appName ?? '',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
                       ),
                     ),
-                    error: (error) => Expanded(child: Center(child: Text(error, style: TextStyle(color: Colors.red),))),
+                    error: (error) => Expanded(
+                      child: Center(
+                        child: Text(error, style: TextStyle(color: Colors.red)),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -103,3 +113,4 @@ class ViewAppsFragment extends StatelessWidget {
     );
   }
 }
+
