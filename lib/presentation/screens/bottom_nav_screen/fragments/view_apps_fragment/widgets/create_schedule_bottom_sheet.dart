@@ -16,18 +16,24 @@ void showCreateScheduleBottomSheet(BuildContext context, AppInfo app) {
   );
 }
 
-class CreateScheduleBottomSheet extends StatelessWidget {
+  // Value Notifiers
+  late ValueNotifier<DateTime?> _selectedDate;
+  late ValueNotifier<TimeOfDay?> _selectedTime;
+  
+  // Controllers
+  late TextEditingController _scheduleLabelController;
+
+class CreateScheduleBottomSheet extends StatefulWidget {
   final AppInfo app;
 
   CreateScheduleBottomSheet({super.key, required this.app});
 
-  final ValueNotifier<DateTime?> _selectedDate = ValueNotifier(null);
-  final ValueNotifier<TimeOfDay?> _selectedTime = ValueNotifier(null);
-  final TextEditingController _scheduleLabelController =
-      TextEditingController();
+  @override
+  State<CreateScheduleBottomSheet> createState() => _CreateScheduleBottomSheetState();
+}
 
-  // FIX 1: Unfocus keyboard before opening pickers so viewInsets collapses
-  // and the date/time row is never hidden behind the keyboard.
+class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
+  // Date Picker
   Future<void> _selectDate(BuildContext context) async {
     FocusScope.of(context).unfocus();
     await Future.delayed(const Duration(milliseconds: 150));
@@ -43,6 +49,7 @@ class CreateScheduleBottomSheet extends StatelessWidget {
     }
   }
 
+  // Time Picker
   Future<void> _selectTime(BuildContext context) async {
     FocusScope.of(context).unfocus();
     await Future.delayed(const Duration(milliseconds: 150));
@@ -56,8 +63,7 @@ class CreateScheduleBottomSheet extends StatelessWidget {
     }
   }
 
-  // FIX 2: Single insertion point — no duplicate insertScheduleApp calls,
-  // no missing Navigator.pop, no race between branches.
+  // Create Schedule
   Future<void> _onCreatePressed(BuildContext context) async {
     if (_selectedDate.value == null || _selectedTime.value == null) {
       toastification.show(
@@ -70,34 +76,38 @@ class CreateScheduleBottomSheet extends StatelessWidget {
       return;
     }
 
+    // Create Single Schedule App Model
     final scheduleApp = ScheduleAppModel(
-      packageName: app.packageName!,
-      appName: app.appName!,
+      packageName: widget.app.packageName!,
+      appName: widget.app.appName!,
       selectedDate: _selectedDate.value!.toIso8601String(),
       selectedTime: _selectedTime.value!.format(context),
-      appIcon: app.iconBytes.toString(),
+      appIcon: widget.app.iconBytes.toString(),
     );
 
-    final existing =
-        await getIt<LocalDbSource>().getSingleScheduleApp(app.appName!);
+    // Get All Schedule Apps
+    final List<ScheduleAppModel> existingScheduleApps =
+        await getIt<LocalDbSource>().getAllScheduleApps();
 
-    // Duplicate check: same app + same date + same time
-    if (existing != null &&
-        existing.selectedDate == scheduleApp.selectedDate &&
-        existing.selectedTime == scheduleApp.selectedTime) {
-      toastification.show(
-        context: context,
-        title: const Text('Schedule already exists'),
-        type: ToastificationType.error,
-        autoCloseDuration: const Duration(seconds: 3),
-        alignment: Alignment.topCenter,
-      );
-      return; // early-out, no insert, no pop
+    // Duplicate check: same date + same time
+    for (var element in existingScheduleApps) {
+      if (element.selectedDate == scheduleApp.selectedDate &&
+          element.selectedTime == scheduleApp.selectedTime) {
+        toastification.show(
+          context: context,
+          title:  Text('Schedule already exists for ${element.appName} at ${element.selectedTime} : ${element.selectedDate}'),
+          type: ToastificationType.error,
+          autoCloseDuration: const Duration(seconds: 4),
+          alignment: Alignment.topCenter,
+        );
+        return;
+      }
     }
 
-    // Insert once — covers all remaining cases
+    // Insert Schedule App
     await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
 
+    // Show Success Toast
     toastification.show(
       context: context,
       title: const Text('Schedule created successfully'),
@@ -109,6 +119,24 @@ class CreateScheduleBottomSheet extends StatelessWidget {
     Navigator.pop(context);
   }
 
+  // Init State
+  @override
+  void initState() {
+    super.initState();
+    _scheduleLabelController = TextEditingController();
+    _selectedDate = ValueNotifier(null);
+    _selectedTime = ValueNotifier(null);
+  }
+
+  // Dispose
+  @override
+  void dispose() {
+    _scheduleLabelController.dispose();
+    _selectedDate.dispose();
+    _selectedTime.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -116,9 +144,6 @@ class CreateScheduleBottomSheet extends StatelessWidget {
         left: 16,
         right: 16,
         top: 16,
-        // FIX 1: Only add bottom inset so the sheet rises with the keyboard,
-        // but the content itself does NOT scroll — keeping date/time visible.
-        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -131,11 +156,11 @@ class CreateScheduleBottomSheet extends StatelessWidget {
 
           /// App Info
           ListTile(
-            leading: app.iconBytes != null
-                ? Image.memory(app.iconBytes!, width: 50, height: 50)
+            leading: widget.app.iconBytes != null
+                ? Image.memory(widget.app.iconBytes!, width: 50, height: 50)
                 : const Icon(Icons.apps),
-            title: Text(app.appName ?? ''),
-            subtitle: Text(app.packageName ?? ''),
+            title: Text(widget.app.appName ?? ''),
+            subtitle: Text(widget.app.packageName ?? ''),
           ),
 
           SizedBox(height: 10.h),
@@ -150,7 +175,6 @@ class CreateScheduleBottomSheet extends StatelessWidget {
 
           SizedBox(height: 20.h),
 
-          /// Date & Time — always visible; tapping unfocuses the text field first
           Row(
             children: [
               Expanded(
