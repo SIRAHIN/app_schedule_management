@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewAppsFragment extends StatelessWidget {
-  const ViewAppsFragment({super.key});
+   ViewAppsFragment({super.key});
+
+  // App Search Text Editing Controller
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,10 @@ class ViewAppsFragment extends StatelessWidget {
           child: Column(
             children: [
               TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  context.read<ViewAppsCubit>().searchApps(value);
+                },
                 decoration: InputDecoration(
                   hintText: 'Search',
                   prefixIcon: Icon(Icons.search),
@@ -85,7 +92,7 @@ class ViewAppsFragment extends StatelessWidget {
                         ),
                       ),
                     ),
-                    error: (error) => Center(child: Text(error)),
+                    error: (error) => Expanded(child: Center(child: Text(error, style: TextStyle(color: Colors.red),))),
                   );
                 },
               ),

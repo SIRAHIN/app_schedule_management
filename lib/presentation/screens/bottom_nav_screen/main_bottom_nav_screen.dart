@@ -6,7 +6,7 @@ class MainBottomNavScreen extends StatelessWidget {
   MainBottomNavScreen({super.key});
 
   // List of pages to be displayed in the bottom navigation bar
-  final List<Widget> _pages = const [
+  final List<Widget> _pages =  [
     ViewAppsFragment(),
     ViewScheduleAppsFragment(),
   ];
