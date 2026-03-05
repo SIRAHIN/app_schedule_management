@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FormatConverter {
   static Uint8List base64ToUint8List(String base64String) {
@@ -16,5 +17,9 @@ class FormatConverter {
       hour: int.parse(base64String.split(':')[0]),
       minute: int.parse(base64String.split(':')[1]),
     );
+  }
+
+  static String formatDateTime(DateTime dateTime) {
+    return DateFormat('EEEE, dd MMM yyyy • hh:mm a').format(dateTime);
   }
 }
