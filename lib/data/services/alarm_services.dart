@@ -32,7 +32,7 @@ void alarmCallback(int id, Map<String, dynamic> params) async {
   );
   await notificationsPlugin.initialize(initSettings);
 
-  /// 1️⃣ Show notification
+  //  Show notification
   const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
     'alarm_channel',
     'Scheduled Apps',
@@ -50,12 +50,12 @@ void alarmCallback(int id, Map<String, dynamic> params) async {
   await notificationsPlugin.show(
     id,
     "Scheduled App",
-    "Time to open your scheduled app",
+    "Time to open your ${params['appName']} app",
     notificationDetails,
     payload: appPackageName,
   );
 
-  /// 2️⃣ Try auto-open app
+  // Try auto-open app
   try {
     FlutterDeviceApps.openApp(appPackageName);
   } catch (e) {
@@ -64,7 +64,7 @@ void alarmCallback(int id, Map<String, dynamic> params) async {
 }
 
 // Schedule alarm \\
-Future<void> scheduleAlarm(DateTime time, String appPackageName) async {
+Future<void> scheduleAlarm(DateTime time, String appPackageName, String appName) async {
   print("Schedule alarm $time $appPackageName");
   await AndroidAlarmManager.oneShotAt(
     time,
@@ -74,7 +74,7 @@ Future<void> scheduleAlarm(DateTime time, String appPackageName) async {
     wakeup: true,
     allowWhileIdle: true,
     alarmClock: true,
-    params: {'package': appPackageName},
+    params: {'package': appPackageName, 'appName': appName},
   ).then(
     (value) {
       print("Alarm scheduled successfully $value");

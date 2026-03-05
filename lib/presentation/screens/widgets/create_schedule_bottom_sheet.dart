@@ -146,14 +146,14 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
     if (widget.scheduleApp != null) {
       bool isUpdateSuccess = await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
       // Schedule Alarm
-      await scheduleAlarm(scheduleDateTime, widget.app.packageName!);
+      await scheduleAlarm(scheduleDateTime, widget.app.packageName!, widget.app.appName!);
       if(isUpdateSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
     } else {
       bool isInsertSuccess = await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
       // Schedule Alarm
-      await scheduleAlarm(scheduleDateTime, widget.app.packageName!);
+      await scheduleAlarm(scheduleDateTime, widget.app.packageName!, widget.app.appName!);
       if(isInsertSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
@@ -211,7 +211,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
         left: 16,
         right: 16,
         top: 16,
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
