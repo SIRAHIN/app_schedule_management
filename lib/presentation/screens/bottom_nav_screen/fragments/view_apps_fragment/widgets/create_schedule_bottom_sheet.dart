@@ -122,7 +122,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
             ],
           ),
           description: Text(
-            '${element.appName} is already scheduled at ${element.selectedTime} ${_selectedTime.value?.period.name} on ${FormatConverter.formatDateTime(_selectedDate.value!)}.',
+            '${element.appName} is already scheduled at ${_selectedTime.value!.hour}:${_selectedTime.value!.minute} ${_selectedTime.value?.period.name} on ${FormatConverter.formatDateTime(_selectedDate.value!)}.',
           ),
           type: ToastificationType.info,
           autoCloseDuration: const Duration(seconds: 4),
