@@ -20,6 +20,6 @@ class FormatConverter {
   }
 
   static String formatDateTime(DateTime dateTime) {
-    return DateFormat('EEEE, dd MMM yyyy • hh:mm a').format(dateTime);
+    return DateFormat('EEEE, dd MMM yyyy').format(dateTime);
   }
 }

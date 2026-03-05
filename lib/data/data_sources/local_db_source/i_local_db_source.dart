@@ -52,8 +52,8 @@ class LocalDbSourceImpl implements LocalDbSource {
   }
 
   @override
-  Future<ScheduleAppModel?> getSingleScheduleApp(String appName) async {
+  Future<ScheduleAppModel?> getSingleScheduleApp(String appPackageName) async {
     final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-    return box.get(appName);
+    return box.get(appPackageName);
   }
 }

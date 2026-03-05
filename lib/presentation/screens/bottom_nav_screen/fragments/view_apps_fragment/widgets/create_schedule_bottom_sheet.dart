@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app_schedule_management/core/helper/formate_converter.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
+import 'package:app_schedule_management/data/services/alarm_services.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart';
@@ -136,11 +137,15 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
     // Insert Schedule App || Update Schedule App
     if (widget.scheduleApp != null) {
       bool isUpdateSuccess = await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
+      // Schedule Alarm
+      await scheduleAlarm(_selectedDate.value!, widget.app.packageName!);
       if(isUpdateSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
     } else {
       bool isInsertSuccess = await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+      // Schedule Alarm
+      await scheduleAlarm(_selectedDate.value!, widget.app.packageName!);
       if(isInsertSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
