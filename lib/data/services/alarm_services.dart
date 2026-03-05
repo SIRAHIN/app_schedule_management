@@ -2,25 +2,65 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/main.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // Alarm callback \
 @pragma('vm:entry-point')
 void alarmCallback(int id, Map<String, dynamic> params) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   print("Alarm callback $params");
-  print("This is inside alarm callback");
+
   String? appPackageName = params['package'];
   if (appPackageName == null) return;
-  print("App package name $appPackageName");
 
-  if(getIt.isRegistered<LocalDbSource>()){
-    print("LocalDbSource is already registered");
-  }else{
+  /// Init dependencies if background isolate
+  if (!getIt.isRegistered<LocalDbSource>()) {
     configureDependencies();
     await initHive();
   }
-  FlutterDeviceApps.openApp(appPackageName);
+
+  /// Initialize notifications in the background isolate
+  final FlutterLocalNotificationsPlugin notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  const AndroidInitializationSettings androidSettings =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initSettings = InitializationSettings(
+    android: androidSettings,
+  );
+  await notificationsPlugin.initialize(initSettings);
+
+  /// 1️⃣ Show notification
+  const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+    'alarm_channel',
+    'Scheduled Apps',
+    channelDescription: 'Notification for scheduled apps',
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+    enableVibration: true,
+  );
+
+  const NotificationDetails notificationDetails = NotificationDetails(
+    android: androidDetails,
+  );
+
+  await notificationsPlugin.show(
+    id,
+    "Scheduled App",
+    "Time to open your scheduled app",
+    notificationDetails,
+    payload: appPackageName,
+  );
+
+  /// 2️⃣ Try auto-open app
+  try {
+    FlutterDeviceApps.openApp(appPackageName);
+  } catch (e) {
+    print("Auto open failed: $e");
+  }
 }
 
 // Schedule alarm \\
