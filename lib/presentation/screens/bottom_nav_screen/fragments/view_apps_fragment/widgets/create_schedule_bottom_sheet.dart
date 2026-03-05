@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_schedule_management/core/helper/formate_converter.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
@@ -99,7 +100,15 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
           element.selectedTime == scheduleApp.selectedTime) {
         toastification.show(
           context: context,
-          title:  Text('Schedule already exists for ${element.appName} at ${element.selectedTime} : ${element.selectedDate}'),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.memory(FormatConverter.base64ToUint8List(element.appIcon!) , height: 25, width: 25,),
+              SizedBox(width: 5.w,),
+              Text("Schedul Conflict")
+            ],
+          ),
+          description: Text('Schedule already exists for ${element.appName} at ${element.selectedTime} ${_selectedTime.value?.period.name}, ${_selectedDate.value?.day}/${_selectedDate.value?.month}/${_selectedDate.value?.year}.'),
           type: ToastificationType.error,
           autoCloseDuration: const Duration(seconds: 4),
           alignment: Alignment.topCenter,
