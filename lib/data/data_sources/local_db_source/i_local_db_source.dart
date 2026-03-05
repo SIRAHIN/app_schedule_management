@@ -6,22 +6,44 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: LocalDbSource)
 class LocalDbSourceImpl implements LocalDbSource {
   @override
-  Future<void> insertScheduleApp(ScheduleAppModel scheduleApp) async {
-    final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-    await box.put(scheduleApp.appName, scheduleApp);
+  Future<bool> insertScheduleApp(ScheduleAppModel scheduleApp) async {
+    try {
+      final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
+      await box.put(scheduleApp.appName, scheduleApp);
+      return true;
+    } catch (error) {
+      print("Insert error: $error");
+      return false;
+    }
   }
 
   @override
-  Future<void> deleteScheduleApp(String appName) async {
-    final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-    await box.delete(appName);
+  Future<bool> deleteScheduleApp(String appName) async {
+    try {
+      final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
+      await box.delete(appName);
+      return true;
+    } catch (error) {
+      print("Delete error: $error");
+      return false;
+    }
   }
 
   @override
-  Future<void> updateScheduleApp(ScheduleAppModel scheduleApp) async {
-    final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-    await box.put(scheduleApp.appName, scheduleApp);
+  Future<bool> updateScheduleApp(ScheduleAppModel scheduleApp) async {
+    try {
+      final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
+
+      await box.put(scheduleApp.appName, scheduleApp);
+
+    print("Update success");
+
+    return true;
+  } catch (error) {
+    print("Update error: $error");
+    return false;
   }
+}
 
   @override
   Future<List<ScheduleAppModel>> getAllScheduleApps() async {

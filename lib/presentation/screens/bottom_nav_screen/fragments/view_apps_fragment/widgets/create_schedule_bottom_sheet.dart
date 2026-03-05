@@ -4,7 +4,9 @@ import 'package:app_schedule_management/core/helper/formate_converter.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
+import 'package:app_schedule_management/presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toastification/toastification.dart';
@@ -133,9 +135,15 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
 
     // Insert Schedule App || Update Schedule App
     if (widget.scheduleApp != null) {
-      await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
+      bool isUpdateSuccess = await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
+      if(isUpdateSuccess){
+        await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
+      }
     } else {
-      await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+      bool isInsertSuccess = await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+      if(isInsertSuccess){
+        await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
+      }
     }
 
     // Show Success Toast

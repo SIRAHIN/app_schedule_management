@@ -1,6 +1,7 @@
 import 'package:app_schedule_management/core/router/route_manager.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/presentation/cubits/view_apps_cubit/cubit/view_apps_cubit.dart';
+import 'package:app_schedule_management/presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,9 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<ViewAppsCubit>()..getInstalledApps(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<ViewScheduleAppsCubit>(),
         ),  
       ],
       child: ToastificationWrapper(

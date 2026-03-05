@@ -16,6 +16,8 @@ import 'data/data_sources/local_db_source/local_db_source.dart' as _i59;
 import 'data/services/app_installed_services.dart' as _i114;
 import 'presentation/cubits/view_apps_cubit/cubit/view_apps_cubit.dart'
     as _i305;
+import 'presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart'
+    as _i118;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i174.GetIt $initGetIt(
@@ -33,5 +35,7 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i59.LocalDbSource>(() => _i660.LocalDbSourceImpl());
   gh.factory<_i305.ViewAppsCubit>(
       () => _i305.ViewAppsCubit(gh<_i114.AppInstalledServices>()));
+  gh.factory<_i118.ViewScheduleAppsCubit>(
+      () => _i118.ViewScheduleAppsCubit(gh<_i59.LocalDbSource>()));
   return getIt;
 }
