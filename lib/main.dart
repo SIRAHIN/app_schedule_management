@@ -1,5 +1,4 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:app_schedule_management/data/services/notification_services.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/presentation/screens/app.dart';
@@ -25,18 +24,7 @@ Future<void> main() async {
   await initHive();
 
   await AndroidAlarmManager.initialize();
-
-  const AndroidInitializationSettings androidInit =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  const InitializationSettings settings = InitializationSettings(
-    android: androidInit,
-  );
-
-  await notificationsPlugin.initialize(
-    settings,
-    onDidReceiveNotificationResponse: onNotificationTap,
-  );
+  print("Alarm initialized");
 
   runApp(const App());
 }

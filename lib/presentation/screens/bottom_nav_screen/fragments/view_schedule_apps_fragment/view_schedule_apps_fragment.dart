@@ -70,7 +70,7 @@ class _ViewScheduleAppsFragmentState extends State<ViewScheduleAppsFragment> {
                             icon: Icon(Icons.delete),
                             onPressed: () async {
                               // Delete Schedule App
-                              bool isDeleteSuccess = await getIt<LocalDbSource>().deleteScheduleApp(scheduleApp.appName);
+                              bool isDeleteSuccess = await getIt<LocalDbSource>().deleteScheduleApp(scheduleApp.packageName);
                               if(isDeleteSuccess){
                                 print("This is delete success : $isDeleteSuccess");
                                 await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();

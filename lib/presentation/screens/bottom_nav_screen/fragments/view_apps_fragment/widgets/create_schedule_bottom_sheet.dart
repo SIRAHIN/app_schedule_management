@@ -134,18 +134,27 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
       }
     }
 
+    // Schedule date time
+    final DateTime scheduleDateTime = DateTime(
+      _selectedDate.value!.year,
+      _selectedDate.value!.month,
+      _selectedDate.value!.day,
+      _selectedTime.value!.hour,
+      _selectedTime.value!.minute,
+    );
+
     // Insert Schedule App || Update Schedule App
     if (widget.scheduleApp != null) {
       bool isUpdateSuccess = await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
       // Schedule Alarm
-      await scheduleAlarm(_selectedDate.value!, widget.app.packageName!);
+      await scheduleAlarm(scheduleDateTime, widget.app.packageName!);
       if(isUpdateSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
     } else {
       bool isInsertSuccess = await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
       // Schedule Alarm
-      await scheduleAlarm(_selectedDate.value!, widget.app.packageName!);
+      await scheduleAlarm(scheduleDateTime, widget.app.packageName!);
       if(isInsertSuccess){
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
