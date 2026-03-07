@@ -1,6 +1,8 @@
 import 'dart:typed_data';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:app_schedule_management/core/helper/formate_converter.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
+import 'package:app_schedule_management/data/services/alarm_services.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart';
 import 'package:app_schedule_management/presentation/screens/widgets/create_schedule_bottom_sheet.dart';
@@ -127,6 +129,10 @@ class _ViewScheduleAppsFragmentState extends State<ViewScheduleAppsFragment> {
                           ),
                         );
                         if (confirmed == true) {
+                          // Cancel alarm
+                          await cancelAlarm(scheduleApp.packageName);
+
+                          // Delete schedule app from local database
                           final isDeleteSuccess = await getIt<LocalDbSource>()
                               .deleteScheduleApp(scheduleApp.packageName);
                           if (isDeleteSuccess) {

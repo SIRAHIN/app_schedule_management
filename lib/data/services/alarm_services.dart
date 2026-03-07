@@ -84,3 +84,8 @@ Future<void> scheduleAlarm(DateTime time, String appPackageName, String appName)
     },
   );
 }
+
+// Cancel alarm \\
+Future<void> cancelAlarm(String appPackageName) async {
+  await AndroidAlarmManager.cancel(appPackageName.hashCode);
+}
