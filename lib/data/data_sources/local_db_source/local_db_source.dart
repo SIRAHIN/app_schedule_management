@@ -5,5 +5,5 @@ abstract class LocalDbSource {
   Future<bool> deleteScheduleApp(String appName);
   Future<bool> updateScheduleApp(ScheduleAppModel scheduleApp);
   Future<List<ScheduleAppModel>> getAllScheduleApps();
-  Future<ScheduleAppModel?> getSingleScheduleApp(String appName);
+  Future<ScheduleAppModel?> getSingleScheduleApp(String appPackageName);
 }

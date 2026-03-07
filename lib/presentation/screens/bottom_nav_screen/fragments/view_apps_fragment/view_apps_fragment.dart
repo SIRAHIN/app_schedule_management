@@ -1,5 +1,5 @@
 import 'package:app_schedule_management/presentation/cubits/view_apps_cubit/cubit/view_apps_cubit.dart';
-import 'package:app_schedule_management/presentation/screens/bottom_nav_screen/fragments/view_apps_fragment/widgets/create_schedule_bottom_sheet.dart';
+import 'package:app_schedule_management/presentation/screens/widgets/create_schedule_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_device_apps/flutter_device_apps.dart';

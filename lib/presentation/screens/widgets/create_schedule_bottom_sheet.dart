@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:app_schedule_management/core/helper/formate_converter.dart';
 import 'package:app_schedule_management/data/data_sources/local_db_source/local_db_source.dart';
+import 'package:app_schedule_management/data/services/alarm_services.dart';
 import 'package:app_schedule_management/domain/schedule_app_model/schedule_app_model.dart';
 import 'package:app_schedule_management/injection.dart';
 import 'package:app_schedule_management/presentation/cubits/view_schedule_apps/cubit/view_schedule_apps_cubit.dart';
@@ -87,13 +87,30 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
       return;
     }
 
+    // If editing and nothing changed, just close
+    if (widget.scheduleApp != null) {
+      final String currentTime =
+          '${_selectedTime.value!.hour.toString()}:${_selectedTime.value!.minute.toString()}';
+
+      final bool labelSame =
+          _scheduleLabelController.text == (widget.scheduleApp!.scheduleLabel ?? '');
+      final bool dateSame =
+          _selectedDate.value?.toIso8601String() == widget.scheduleApp!.selectedDate;
+      final bool timeSame = currentTime == widget.scheduleApp!.selectedTime;
+
+      if (labelSame && dateSame && timeSame) {
+        Navigator.pop(context);
+        return;
+      }
+    }
+
     // Create Single Schedule App Model
     final scheduleApp = ScheduleAppModel(
       packageName: widget.app.packageName!,
       appName: widget.app.appName!,
       selectedDate: _selectedDate.value!.toIso8601String(),
       selectedTime:
-          '${_selectedTime.value!.hour.toString().padLeft(2, '0')}:${_selectedTime.value!.minute.toString().padLeft(2, '0')}',
+          '${_selectedTime.value!.hour.toString()}:${_selectedTime.value!.minute.toString()}',
       appIcon: base64Encode(widget.app.iconBytes!),
       scheduleLabel: _scheduleLabelController.text,
     );
@@ -102,8 +119,15 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
     final List<ScheduleAppModel> existingScheduleApps =
         await getIt<LocalDbSource>().getAllScheduleApps();
 
-    // Duplicate check: same date + same time
+    // Duplicate check
     for (var element in existingScheduleApps) {
+      if (widget.scheduleApp != null &&
+          element.packageName == widget.scheduleApp!.packageName &&
+          element.selectedDate == widget.scheduleApp!.selectedDate &&
+          element.selectedTime == widget.scheduleApp!.selectedTime) {
+        continue;
+      }
+
       if (element.selectedDate == scheduleApp.selectedDate &&
           element.selectedTime == scheduleApp.selectedTime) {
         toastification.show(
@@ -121,7 +145,13 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
             ],
           ),
           description: Text(
-            '${element.appName} is already scheduled at ${element.selectedTime} ${_selectedTime.value?.period.name} on ${FormatConverter.formatDateTime(_selectedDate.value!)}.',
+            '${element.appName} is already scheduled at ${FormatConverter.formatTimeOfDay(DateTime(
+            _selectedDate.value!.year,
+            _selectedDate.value!.month,
+            _selectedDate.value!.day,
+            _selectedTime.value!.hour,
+            _selectedTime.value!.minute,
+          ))} on ${FormatConverter.formatDate(_selectedDate.value!)}.',
           ),
           type: ToastificationType.info,
           autoCloseDuration: const Duration(seconds: 4),
@@ -133,15 +163,32 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
       }
     }
 
+    // Schedule date time
+    final DateTime scheduleDateTime = DateTime(
+      _selectedDate.value!.year,
+      _selectedDate.value!.month,
+      _selectedDate.value!.day,
+      _selectedTime.value!.hour,
+      _selectedTime.value!.minute,
+    );
+
     // Insert Schedule App || Update Schedule App
     if (widget.scheduleApp != null) {
-      bool isUpdateSuccess = await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
-      if(isUpdateSuccess){
+      bool isUpdateSuccess =
+          await getIt<LocalDbSource>().updateScheduleApp(scheduleApp);
+      // Schedule Alarm
+      await scheduleAlarm(
+          scheduleDateTime, widget.app.packageName!, widget.app.appName!);
+      if (isUpdateSuccess) {
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
     } else {
-      bool isInsertSuccess = await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
-      if(isInsertSuccess){
+      bool isInsertSuccess =
+          await getIt<LocalDbSource>().insertScheduleApp(scheduleApp);
+      // Schedule Alarm
+      await scheduleAlarm(
+          scheduleDateTime, widget.app.packageName!, widget.app.appName!);
+      if (isInsertSuccess) {
         await context.read<ViewScheduleAppsCubit>().getAllScheduleApps();
       }
     }
@@ -198,7 +245,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
         left: 16,
         right: 16,
         top: 16,
-        bottom: MediaQuery.of(context).viewInsets.bottom,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

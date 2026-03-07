@@ -9,7 +9,7 @@ class LocalDbSourceImpl implements LocalDbSource {
   Future<bool> insertScheduleApp(ScheduleAppModel scheduleApp) async {
     try {
       final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-      await box.put(scheduleApp.appName, scheduleApp);
+      await box.put(scheduleApp.packageName, scheduleApp);
       return true;
     } catch (error) {
       print("Insert error: $error");
@@ -18,10 +18,10 @@ class LocalDbSourceImpl implements LocalDbSource {
   }
 
   @override
-  Future<bool> deleteScheduleApp(String appName) async {
+  Future<bool> deleteScheduleApp(String appPackageName) async {
     try {
       final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-      await box.delete(appName);
+      await box.delete(appPackageName);
       return true;
     } catch (error) {
       print("Delete error: $error");
@@ -32,12 +32,9 @@ class LocalDbSourceImpl implements LocalDbSource {
   @override
   Future<bool> updateScheduleApp(ScheduleAppModel scheduleApp) async {
     try {
-      final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-
-      await box.put(scheduleApp.appName, scheduleApp);
-
+    final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
+    await box.put(scheduleApp.packageName, scheduleApp);
     print("Update success");
-
     return true;
   } catch (error) {
     print("Update error: $error");
@@ -52,8 +49,13 @@ class LocalDbSourceImpl implements LocalDbSource {
   }
 
   @override
-  Future<ScheduleAppModel?> getSingleScheduleApp(String appName) async {
-    final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
-    return box.get(appName);
+  Future<ScheduleAppModel?> getSingleScheduleApp(String appPackageName) async {
+    try {
+      final box = await Hive.openBox<ScheduleAppModel>('schedule_apps');
+      return box.get(appPackageName);
+    } catch (error) {
+      print("Get single error: $error");
+      return null;
+    }
   }
 }
