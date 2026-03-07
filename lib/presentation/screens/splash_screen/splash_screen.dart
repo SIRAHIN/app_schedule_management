@@ -1,6 +1,8 @@
 import 'package:app_schedule_management/core/paths/assets_paths.dart';
 import 'package:app_schedule_management/core/router/route_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +31,7 @@ class _SplashViewState extends State<SplashScreen>
     _controller.forward();
 
     // Check if user is logged in
-    Future.delayed(const Duration(seconds: 0), () async {
+    Future.delayed(const Duration(seconds: 3), () async {
       RouteManager.router.go(mainNavViewPath);
     });
   }
@@ -47,21 +49,30 @@ class _SplashViewState extends State<SplashScreen>
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.red,
-              Colors.black,
+              Colors.white,
+              Colors.white30,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
         child: Center(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: Image.asset(
-              AssetsPath.logo,
-              width: 180,
-              fit: BoxFit.contain,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Image.asset(
+                  AssetsPath.logo,
+                  width: 380,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              LoadingAnimationWidget.hexagonDots(
+                color: Colors.red,
+                size: 30,
+              ),
+            ],
           ),
         ),
       ),

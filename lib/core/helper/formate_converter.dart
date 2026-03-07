@@ -19,7 +19,7 @@ class FormatConverter {
     );
   }
 
-  static String formatDateTime(DateTime dateTime) {
+  static String formatDate(DateTime dateTime) {
     return DateFormat('EEEE, dd MMM yyyy').format(dateTime);
   }
 
